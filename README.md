@@ -1,6 +1,3 @@
-# Frontend_Portfolio
-前端作品
-
 您好
 最外層是我的個人簡歷
 
