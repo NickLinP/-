@@ -1,0 +1,31 @@
+a, a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+/* .memberContainer {
+    max-width: 1440px;
+    margin: 0 auto;
+} */
+
+.menu {
+    border-bottom: 1px solid rgb(209, 209, 209);
+    padding-bottom: 2px;
+}
+
+.grid-container {
+    font-size: 25px;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    /* gap: 10px; */
+    /* padding: 10px; */
+    /* background-color: gray;
+    border: 1px solid black; */
+}
+
+.grid-container>div {
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    /* padding: 20px 0; */
+    /* border: 1px solid black; */
+}

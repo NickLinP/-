@@ -1,0 +1,30 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "jwt-decode": "^3.1.2",
+    "local": "^0.3.3",
+    "mysql": "^2.18.1",
+    "node-sessionstorage": "^1.0.0",
+    "node-storage": "^0.0.9",
+    "nodemailer": "^6.7.7",
+    "nodemon": "^2.0.18",
+    "session": "^0.1.0",
+    "svg-captcha": "^1.4.0",
+    "to": "^0.2.9",
+    "update": "^0.7.4"
+  }
+}

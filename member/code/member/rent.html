@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <!-- Bootstrap5引用 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="../css/menu.css">
+    <link rel="stylesheet" type="text/css" href="../css/popUp.css">
+    <script src="../_js/jquery-3.6.0.js"></script>
+    <style>
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .listTable tr th {
+            border: 1px solid white;
+            text-align: center;
+            width: 20%;
+            background-color: gray;
+        }
+
+        .listTable td {
+            border: 1px solid white;
+            text-align: center;
+            border-bottom: 1px solid gray;
+        }
+
+        .listTable td:first-child,
+        .listTable td:nth-child(2),
+        .listTable td:nth-child(3) {
+            border-right: 1px solid gray;
+        }
+
+        .search {
+            width: 80%;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            /* border: 1px solid black; */
+        }
+
+        .orderDetail {
+            /* 24.8%是實際測試結果，剛好可以填滿外層div的100%寬度，如果大於會發生跑版 */
+            width: 24.8%;
+            height: 200px;
+            border: 1px solid yellow;
+            float: left;
+            text-align: center;
+        }
+
+        /* 彈出視窗畫面排版的CSS */
+        .FlexContainer {
+            display: flex;
+            flex-wrap: wrap;
+            /* justify-content: center;
+            align-items: center;
+            align-content: center; */
+            width: 100%;
+            /* background-color: #2f1d58; */
+            flex-direction: row;
+        }
+
+        .FlexContainer div {
+            margin: 5px;
+            /* background-color: lightblue; */
+        }
+
+        .flex1 {
+            /* border: 1px solid red; */
+            width: 70%;
+        }
+
+        .flex2 {
+            /* border: 1px solid red; */
+            width: 28%;
+            height: 100%;
+            font-size: 3em;
+            padding: 1%;
+            margin-top: 500px;
+        }
+
+        .flex3 {
+            /* border: 1px solid red; */
+            width: 100%;
+            font-size: 3em;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <header>
+        <script src="../headerAndFooter/header.js"></script>
+    </header>
+
+    <div class="memberContainer">
+        <div class="row g-5" style="margin-top: 0;">
+            <script src="../headerAndFooter/memberMenu.js"></script>
+            <div class="col-8" style="margin: 0 auto;">
+                <div>
+                    <p class="h2">空間申請紀錄</p>
+                </div>
+                <hr>
+                <div id="title" class="search h4">
+                    <span>依日期搜尋</span>
+                    <input type="date" class="dateInput ">
+                    <span>~</span>
+                    <input type="date" class="dateInput">
+                    <span class="btn btn-dark">搜尋</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup-wrap" id="letmeopen">
+        <div class="popup-box transform-out">
+            <section class='FlexContainer'>
+                <div class="flex1">
+                    <img id="site_img" src="..\images\Exhibition_introduction\img\fariab1.jpeg" width="100%"
+                        height="100%">
+                </div>
+                <div class="flex2">
+                    <div>
+                        <p>姓名 : <span id="name">林駿逸</span></p>
+                        <p>電話 : <span id="phoneNumber">0976485463</span></p>
+                        <p>租借時長 : <span id="duration">3天</span></p>
+                        <p>加購設備 : <span id="addDevice">是/否</span></p>
+                        <p>用途 : <span id="purpose">文創小物展覽</span></p>
+                        <p>備註 : <span id="remark">需要多組燈具</span></p>
+                    </div>
+
+                </div>
+                <div class="flex3">
+                    <p>場地介紹 :
+                    <pre id="introduce">
+一樓・靜亮的綠
+騎樓｜午後陽光灑在磨石子地面，留白攤車與市集聚集，人群熙攘，穿梭在光影間欣賞創作。
+
+外帶區｜精品義式咖啡、氮氣茶冷泡茶、blank sweet 甜點販售，當外帶成為文明習慣，回頭講究品質與意義，從儀式感建立與自己的關係，焦躁的日程中，讓渡出一片陰影給自己，重新調整步伐與呼吸。
+
+室內｜留白茶想・茶藝體驗空間：茶思，想的是技藝之深，泡一碗好茶，和所愛之人分享，喝的是茶香，品的是相聚。
+
+天井區｜保留陽光原始的能量，大片光從頂處落下，植物充盈於此，為旅人留下停駐的理由。
+
+一樓作為「留白茶想」茶藝品牌的場域，利用老風化木桌、早期戲院木椅及斑駁不規則的灰牆傳遞歲月痕跡，毛玻璃透出的燈光替空間注入了質樸內斂的靈魂，創造一個與自我對話的飲茶環境，圓角型吧台設計將高度降至一般桌高，同時融入茶席擺設，讓飲茶者可以舒適地使用桌面外，也能輕鬆地與茶師互動、交流。
+
+一樓側邊「Blank To Go」，延續騎樓的水泥牆面，並加入共通室內的圓拱型長虹玻璃門設計，天花由白胚布幔交疊而成，透出隱約可見的古老鋼構，是粗獷與溫柔的交融體。
+            </pre>
+                    </p>
+                </div>
+            </section>
+            <a class="close-btn popup-close" href="#" style="text-decoration: none;">x</a>
+        </div>
+    </div>
+
+    <footer>
+        <script src="../headerAndFooter/footer.js"></script>
+    </footer>
+
+    <!-- 場地預約紀錄帶出渲染畫面 -->
+    <script>
+        $(document).ready(function () {
+            // 取得會員編號
+            var userId = sessionStorage.getItem('userId');
+            var dataToServer = { userId: userId };
+
+            // ajax收到的場地資料保留，後面彈跳視窗出現時會用到
+            var infoArr = '';
+
+            $.ajax({
+                type: "post",
+                url: "http://localhost:3000/member/rent",
+                data: JSON.stringify(dataToServer),
+                contentType: "application/json",
+                success: function (e) {
+                    // ajax收到的場地資料保留，後面彈跳視窗出現時會用到
+                    // 資料保存後，透過搭配將迴圈i的值寫入到 '點我' 按鍵上，就可以取得value
+                    // 並且透過這個value訪問到是infoArr內的哪一筆資料
+                    // 就可以達到點選按鈕時更換該筆紀錄的內容
+                    infoArr = e;
+
+                    for (var i = 0; i < e.length; i++) {
+                        id = e[i].id;
+                        var reserveDate = e[i].reserveDate.substr(0, 10);
+                        var startTime = e[i].startTime;
+                        var site = e[i].site;
+                        var name = e[i].name;
+                        var phoneNumber = e[i].phoneNumber;
+                        var duration = e[i].duration;
+                        var addDevice = e[i].addDevice;
+                        var purpose = e[i].purpose;
+                        var remark = e[i].remark;
+                        var introduce = e[i].introduce;
+
+                        $('#title').after(
+                            `
+                        <div>
+                             <table style="width: 100%; border-collapse:collapse; margin-bottom: 1%;" class="listTable">
+                                <tbody>
+                                    <tr class="h3">
+                                        <th>預定日期</th>
+                                        <th>時間</th>
+                                        <th>場地</th>
+                                        <th>詳細資料</th>
+                                    </tr>
+                                    <tr class="h4">
+                                        <td>${reserveDate}</td>
+                                        <td>${startTime}</td>
+                                        <td>${site}</td>
+                                        <td class="popup-btn" href='#letmeopen' value = ${i}>
+                                        點我
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                         </div>
+                         `
+
+
+                        )
+
+                        // 彈出視窗控制程式，必須也放在ajax的成功結果內，否則上面透過迴圈生成的畫面
+                        // 會無法觸發js程式，即使class或是id都是對的
+                        $(".popup-btn").click(function (e) {
+                            var clickId = $(this).attr('value');
+                            console.log(infoArr[clickId]);
+
+                            // 更換畫面內容
+                            $('#name').text(infoArr[clickId].name);
+                            $('#phoneNumber').text(infoArr[clickId].phoneNumber);
+                            $('#duration').text(infoArr[clickId].duration);
+                            $('#addDevice').text(infoArr[clickId].addDevice);
+                            $('#purpose').text(infoArr[clickId].purpose);
+                            $('#remark').text(infoArr[clickId].remark);
+                            $('#introduce').text(infoArr[clickId].introduce);
+                            // 展場圖片顯示判斷，資料庫會記錄是場地A B C，透過這個判斷改成顯示什麼圖片
+                            if (infoArr[clickId].site == 'A') {
+                                $('#site_img').attr('src', '../images/Exhibition_introduction/img/fariaa3.jpeg');
+                            } else if (infoArr[clickId].site == 'B') {
+                                $('#site_img').attr('src', '../images/Exhibition_introduction/img/fariac3.jpeg');
+                            } else if (infoArr[clickId].site == 'C') {
+                                $('#site_img').attr('src', '../images/Exhibition_introduction/img/fariad2.jpeg');
+                            }
+
+                            var href = $(this).attr("href");
+                            $(href).fadeIn(250);
+                            $(href).children$(".popup-box").removeClass("transform-out").addClass("transform-in");
+                            e.preventDefault();
+                        });
+
+                        $(".popup-close").click(function () {
+                            closeWindow();
+                        });
+
+                        function closeWindow() {
+                            $(".popup-wrap").fadeOut(200);
+                            $(".popup-box").removeClass("transform-in").addClass("transform-out");
+                            event.preventDefault();
+                        }
+                    }
+                }
+            })
+        });
+
+    </script>
+
+    <!-- 會員側欄高度計算 -->
+    <script src="../headerAndFooter/memberMeunCal.js"></script>
+    <!-- 會員側欄資料渲染 -->
+    <script src="../headerAndFooter/memberMenuData.js"></script>
+</body>
+
+</html>

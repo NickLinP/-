@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <!-- Bootstrap5引用 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="../css/menu.css">
+    <script src="../_js/jquery-3.6.0.js"></script>
+    <style>
+        .listTable tr td {
+            border: 1px solid white;
+            text-align: center;
+        }
+
+        .listTable td {
+            width: 20%;
+            background-color: gray;
+        }
+
+        .search {
+            width: 80%;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            /* border: 1px solid black; */
+        }
+
+        /* 將商品清單隱藏 */
+        .hide {
+            display: none;
+        }
+
+        .show {
+            display: block
+        }
+
+        /* 商品flex */
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            text-align: center;
+            height: 250px;
+            /* border: 1px solid red; */
+        }
+
+        .flex-item-left {
+            background-color: #f1f1f1;
+            padding: 10px;
+            flex: 20%;
+        }
+
+        .flex-item-right {
+            /* background-color: dodgerblue; */
+            padding: 10px;
+            flex: 20%;
+        }
+
+        @media (max-width: 1000px) {
+            .flex-container {
+                height: 500px;
+            }
+
+            .flex-item-right,
+            .flex-item-left {
+                flex: 100%;
+            }
+        }
+
+        #select {
+            width: 1000px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <script src="../headerAndFooter/header.js"></script>
+    </header>
+
+    <div class="memberContainer">
+        <div class="row g-5" style="margin-top: 0;">
+            <script src="../headerAndFooter/memberMenu.js"></script>
+            <div class="col-8" style="margin: 0 auto;">
+                <div>
+                    <p class="h2">購物紀錄</p>
+                </div>
+                <hr>
+                <div class="search h4" id="title">
+                    <span>依日期搜尋</span>
+                    <input type="date" class="dateInput ">
+                    <span>~</span>
+                    <input type="date" class="dateInput">
+                    <span class="btn btn-dark">搜尋</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <script src="../headerAndFooter/footer.js"></script>
+    </footer>
+
+    <!-- 畫面渲染 -->
+    <script>
+        // 每次點開指定的看明細+按鈕後需要紀錄已經執行過ajax
+        // 避免重複執行
+        var gloAjaxStatus = [];
+
+        $(document).ready(function () {
+            // 取得會員編號
+            var userId = sessionStorage.getItem('userId');
+            var dataToServer = { userId: userId };
+
+            // ajax收到的場地資料保留，後面彈跳視窗出現時會用到
+            var infoArr = '';
+
+            $.ajax({
+                type: "post",
+                url: "http://localhost:3000/member/order",
+                data: JSON.stringify(dataToServer),
+                contentType: "application/json",
+                success: function (e) {
+                    console.log(e);
+                    infoArr = e;
+                    for (var i = 0; i < e.length; i++) {
+                        var id = e[i].id;
+                        var orderNumber = e[i].orderNumber;
+                        var orderDate = e[i].orderDate.substr(0, 10);
+                        var totalPrice = e[i].totalPrice;
+                        var deliveryStatus = e[i].deliveryStatus;
+                        $('#title').after(
+                            `
+                        <table style="width: 100%; border-collapse:collapse;" class="listTable">
+                             <tbody>
+                                <tr class="h3">
+                                    <td>訂單編號</td>
+                                    <td>訂單日期</td>
+                                    <td>總金額</td>
+                                    <td>配送狀態</td>
+                                    <td>聯絡客服</td>
+                                </tr>
+                                <tr class="h4">
+                                    <td>${orderNumber}</td>
+                                    <td>${orderDate}</td>
+                                    <td>${totalPrice}元</td>
+                                    <td>${deliveryStatus}</td>
+                                    <td>留言</td>
+                                </tr>
+                            </tbody>
+                         </table>
+
+                        <div class="orderDetail" value='0' id='${id}'>
+                        <img src="../images/member/icon/icon_list1.gif" alt="">
+                        </div>
+
+                        <div class="productDetail"><div>
+                         `
+                        )
+                    }
+
+                    // 商品清單展開圖示切換
+                    // 透過value決定顯示+還是-
+                    // 透過id確認選擇到的是哪一份訂單
+                    $(`.orderDetail`).on('click', function () {
+                        var status = $(this).attr('value');
+                        var id = $(this).attr('id');
+                        var clickOrderNumber = 0;
+                        // 透過狀態判斷決定看明細符號的顯示
+                        // 以及商品詳細內容要顯示還隱藏
+                        if (status == 0) {
+                            $(this).attr('value', '1');
+                            $(this).children('img').attr('src', '../images/member/icon/icon_list0.gif')
+                            $(`#${id} + .productDetail`).removeClass('hide');
+                        }
+
+                        if (status == 1) {
+                            $(this).attr('value', '0');
+                            $(this).children('img').attr('src', '../images/member/icon/icon_list1.gif')
+                            $(`#${id} + .productDetail`).addClass('hide');
+                        }
+
+                        // 點選到的訂單編號查詢
+                        for (var j = 0; j < infoArr.length; j++) {
+                            if (id == infoArr[j].id) {
+                                clickOrderNumber = infoArr[j].orderNumber;
+                            }
+                        }
+
+                        if (gloAjaxStatus[id] == undefined) {
+                            detailCall(clickOrderNumber, id);
+                        }
+                        gloAjaxStatus[id] = 1;
+                        // console.log(id);
+                    })
+                }
+            })
+
+            $(`.orderDetail`).on('click', function () {
+                resize();
+            })
+        });
+
+
+        function detailCall(clickOrderNumber, target) {
+            // console.log(clickOrderNumber);
+            console.log(target);
+            var dataToServer = {
+                orderNumber: clickOrderNumber
+            }
+            $.ajax({
+                type: "post",
+                url: "http://localhost:3000/member/order/detail",
+                data: JSON.stringify(dataToServer),
+                contentType: "application/json",
+                success: function (e) {
+                    e.forEach(function (item, idx) {
+                        var productImage = item.productImage;
+                        var productName = item.productName;
+                        var quantity = item.quantity;
+                        var price = item.price;
+                        // 這裡使用.append的原因是因為css選擇器，這樣子才可以再點選看明細
+                        // 圖示的時候同時將內容隱藏及顯示，如果是使用.after則會出現只有一個
+                        // 商品能有顯示隱藏，超過的會一直顯示在畫面上
+                        $(`#${target} + .productDetail`).append(
+                            `
+                            <div class="flex-container">
+                             <!-- 商品圖片 -->
+                                <div class="flex-item-right">
+                                <img src="${productImage}" alt=""
+                                style="display: block; height: 200px; margin: 0 auto;">
+                                </div>
+                            <!-- 商品名稱 -->
+                                <div class="flex-item-right">
+                                    <div style="height: 40%;" class="h3">商品名稱</div>
+                                        <div class="h4">${productName}</div>
+                                    </div>
+                            <!-- 數量 -->
+                            <div class="flex-item-right">
+                                <div style="height: 40%;" class="h3">數量</div>
+                                    <div class="h4">${quantity}</div>
+                                </div>
+                             <!-- 價格 -->
+                            <div class="flex-item-right">
+                                <div style="height: 40%;" class="h3">單價</div>
+                                    <div class="h4">${price}</div>
+                                </div>
+                            </div>
+                        `
+                        )
+                    })
+                    resize();
+                }
+            })
+
+            function resize() {
+                var height = document.body.offsetHeight -
+                    document.getElementById("theHeader").offsetHeight -
+                    document.getElementById("theFooter").offsetHeight;
+                console.log(height);
+                $('#memberNav').attr('style', `height:${height}px;`);
+                console.log('ok');
+            }
+        }
+    </script>
+
+    <!-- 會員側欄高度計算 -->
+    <script src="../headerAndFooter/memberMeunCal.js"></script>
+    <!-- 會員側欄資料渲染 -->
+    <script src="../headerAndFooter/memberMenuData.js"></script>
+</body>
+
+</html>

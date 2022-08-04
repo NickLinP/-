@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <!-- Bootstrap5引用 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+
+    <!-- jQuery引用 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <style>
+        .logAndSign li {
+            float: left;
+            /* border: 1px solid black; */
+            text-align: center;
+            list-style: none;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <script src="../headerAndFooter/header.js"></script>
+    </header>
+
+
+    <div class="loginContainer">
+
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-md-7 col-lg-8" style="margin: 0 auto; ">
+                    <form class="needs-validation" novalidate>
+                        <div class="row g-3">
+
+                            <div class="col-12">
+                                <div class="logAndSign h2"
+                                    style="display: inline-block; border:1px solid rgb(209, 209, 209); padding: 5px;">
+                                    <li><a href="./login.html"
+                                            style="color:black; text-decoration:none;"><span>會員登入</span></a></li>
+                                    <li style="color: white; background-color:black;"><span>立即註冊</span></li>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="firstName" class="form-label" style="font-size: 24px;">名稱</label>
+                                <input type="text" class="form-control" id="firstName" required style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="lastName" class="form-label" style="font-size: 24px;">姓氏</label>
+                                <input type="text" class="form-control" id="lastName" required style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="email" class="form-label"><span class="text-muted" style="font-size: 24px;">Email</span></label>
+                                <input type="email" class="form-control" id="email" style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="password" class="form-label" style="font-size: 24px;">密碼</label>
+                                <input type="password" class="form-control" id="password" style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="passwordCheck" class="form-label" style="font-size: 24px;">確認密碼</label>
+                                <input type="password" class="form-control" id="passwordCheck" style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="birthDate" class="form-label" style="font-size: 24px;">出生日期</label>
+                                <input type="date" class="form-control" id="birthDate" placeholder="1993/09/12"
+                                    required style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+
+
+                            <div class="col-6">
+                                <label for="captcha" class="form-label" style="font-size: 24px;">圖形驗證碼</label>
+                                <input type="text" class="form-control" id="captcha" style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                                <div class="invalid-feedback" style="font-size: 24px;">
+                                    請輸入圖形驗證碼
+                                </div>
+                            </div>
+
+                            <div id="image_code" class="getImageCode col-2"></div>
+                        </div>
+
+                        <hr id="hori" class="my-4">
+
+                        <div class="row">
+                            <div class="col-6">
+                                <button id="signUp" class="w-75 btn btn-lg btn-dark" type="button">註冊</button>
+                            </div>
+
+                            <div class="col-6">
+                                <button id="clear" class="w-75 btn btn-lg btn-dark" type="button"
+                                    style="float: right;">清除</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer>
+        <script src="../headerAndFooter/footer.js"></script>
+    </footer>
+
+    <!-- 圖形驗證碼 -->
+    <script>
+        // 從後端獲取並顯示在畫面
+        $(document).ready(function () {
+            getImageCode();
+        })
+
+        // 獲取驗證碼
+        function getImageCode() {
+            var _this = this;
+            $("#image_code").val("");
+            var dataToServer = {
+                size: 4,  //驗證碼長度
+                width: 200,
+                height: 150,
+                background: 'black',//干擾線條數
+                noise: 2,
+                fontSize: 32,
+                ignoreChars: '0o1i',   //驗證碼字符中排除'0o1i'
+                color: true // 驗證碼的字符是否有顏色，默認沒有，如果設定了背景，則默認有           
+            }
+            $.ajax({
+                type: "get",
+                url: "http://localhost:3000/get-img-verify",
+                data: JSON.stringify(dataToServer),
+                contentType: "application/json"
+            })
+                .done(function (data) {
+                    $(".getImageCode").html(`點擊更新` + data.img);
+                    $(".getImageCode").attr('style','font-size:24px;')
+                    $(".getImageCode").off("click").on("click", function () {
+                        _this.getImageCode();
+                    });
+                    console.log(data);
+                });
+        }
+
+
+        // 發送輸入的驗證碼，整合到註冊按鈕內
+        // function postImageCode() {
+        //     var _this = this;
+        //     $("#image_code").val("");
+        //     var dataToServer = {
+        //         code: $('#captcha').val()
+        //     }
+        //     $.ajax({
+        //         type: "post",
+        //         url: "http://localhost:3000/cerification",
+        //         data: JSON.stringify(dataToServer),
+        //         contentType: "application/json"
+        //     })
+        //         .done(function (data) {
+        //             console.log(data);
+        //         });
+        // }  
+    </script>
+
+    <!-- 註冊功能 -->
+    <script>
+        // 註冊按鈕功能
+        // 按下後會將輸入的資料打包並發送到後端進行比對email是否有重複
+        var dataDuplicated = false;
+        var passwordError = false;
+        var dataDuplicatedCheck = false;
+        var passwordDuplicatedCheck = false;
+        var emailAlreadySignUp = false;
+        var captchaError = false;
+
+        $("#signUp").on("click", function () {
+            var dataToServer = {
+                firstName: $('#firstName').val(),
+                lastName: $('#lastName').val(),
+                email: $('#email').val(),
+                password: $('#password').val(),
+                birthDate: $('#birthDate').val(),
+                code: $('#captcha').val()
+            }
+            var passwordCheck = $('#passwordCheck').val();
+
+            // 資料不完整警告資訊初始化，如果不移除該標籤會一直累加在頁面上
+            if (dataDuplicatedCheck == true) {
+                $('#missingData').remove();
+                dataDuplicatedCheck = false;
+            }
+
+            // 圖形驗證碼錯誤初始化，如果不移除該標籤會一直累加在頁面上
+            if (captchaError == true) {
+                $('#captchaError').remove();
+                captchaError = false;
+            }
+
+            // 密碼確認輸入錯誤警告資訊初始化，如果不移除該標籤會一直累加在頁面上
+            if (passwordDuplicatedCheck == true) {
+                console.log('移除密碼重複');
+                $('#passwordCheckText').remove();
+                passwordDuplicatedCheck = false;
+            }
+
+            // email重複錯誤警告資訊初始化，如果不移除該標籤會一直累加在頁面上
+            if (emailAlreadySignUp == true) {
+                $('#alreadySignUp').remove();
+                emailAlreadySignUp = false;
+            }
+
+            // 檢查是否有空白資料
+            if (dataToServer.firstName == '' |
+                dataToServer.lastName == '' |
+                dataToServer.email == '' |
+                dataToServer.password == '' |
+                dataToServer.birthDate == '' |
+                passwordCheck == '' |
+                dataToServer.code == ''
+            ) {
+                dataDuplicated = true;
+            } else {
+                dataDuplicated = false;
+            }
+
+            if (dataToServer.password != passwordCheck) {
+                passwordError = true;
+            } else {
+                passwordError = false;
+            }
+
+            // 資料輸入完整，但密碼與密碼確認輸入不同
+            if (dataDuplicated == false & passwordError == true) {
+                console.log('密碼確認輸入錯誤');
+                // 避免重複產生警告文字
+                passwordDuplicatedCheck = true;
+                $('#passwordCheck').after('<div id="passwordCheckText" style="color: red;">確認密碼輸入錯誤</div>');
+                return;
+            }
+
+            if (dataDuplicated == true) {
+                console.log('資料輸入不完整');
+                dataDuplicatedCheck = true;
+                $('#hori').after('<div id="missingData" style="color: red;">資料輸入不完整</div>');
+                return;
+            }
+
+            console.log('資料無誤');
+            // 發送會員資料到後端進行註冊
+            $.ajax({
+                type: "post",
+                url: "http://localhost:3000/member/signUp",
+                data: JSON.stringify(dataToServer),
+                contentType: "application/json",
+                success: function (e) {
+                    // e如果得到'verify_error'代表驗證碼輸入錯誤
+                    if (e == 'verify_error') {
+                        console.log('驗證碼輸入錯誤');
+                        $('#hori').after('<div id="captchaError" style="color: red;">驗證碼輸入錯誤</div>');
+                        captchaError = true;
+                    }
+
+                    if (e == 'verify_ok') {
+                        console.log('驗證碼輸入正確');
+                    }
+
+                    // e如果得到'duplicated_account'代表輸入的email重複
+                    if (e == 'duplicated_account') {
+                        console.log(`狀態是${emailAlreadySignUp}`);
+                        if (emailAlreadySignUp == false) {
+                            emailAlreadySignUp = true;
+                            $('#email').after('<div id="alreadySignUp" style="color: red;">這個Email已經註冊</div>');
+                        }
+                        return;
+                    }
+
+                    // e如果得到'signUp_success'代表註冊成功
+                    if (e == 'signUp_success') {
+                        window.location = './login.html';
+                    }
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

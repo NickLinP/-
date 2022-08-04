@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+
+    <!-- Bootstrap5引用 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+
+    <!-- jQuery引用 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- google登入引用 -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- google登入功能 -->
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+        }
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "392123110449-u7593pasuhr06au41cagudg2e341mhka.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById("btnGoogleLogin"),
+                { theme: "outline", size: "large" }  // customization attributes
+            );
+            google.accounts.id.prompt(); // also display the One Tap dialog
+        }
+    </script>
+
+    <style>
+        .logAndSign li {
+            float: left;
+            /* border: 1px solid black; */
+            text-align: center;
+            list-style: none;
+            padding: 5px;
+        }
+    </style>
+
+    <!-- 彈出視窗css -->
+    <style>
+        /* 彈出視窗功能的CSS */
+        /* .wrap {
+            text-align: center;
+            padding-top: 20%;
+        } */
+
+
+        .btn {
+            background-color: #FFB80C;
+            text-decoration: none;
+            color: #1e1e1e;
+            padding: 16px;
+            border-radius: 5px;
+        }
+
+        .popup-wrap {
+            width: 100%;
+            height: 100%;
+            display: none;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            content: '';
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .popup-box {
+            width: 50%;
+            padding: 50px 75px;
+            transform: translate(-50%, -50%) scale(0.5);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.5);
+            border-radius: 3px;
+            background: #fff;
+        }
+
+        .close-btn {
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #fff;
+            line-height: 40px;
+            font-size: 64px;
+        }
+
+        .transform-in,
+        .transform-out {
+            display: block;
+            -webkit-transition: all ease 0.5s;
+            transition: all ease 0.5s;
+        }
+
+        .transform-in {
+            -webkit-transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .transform-out {
+            -webkit-transform: translate(-50%, -50%) scale(0.5);
+            transform: translate(-50%, -50%) scale(0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <script src="../headerAndFooter/header.js"></script>
+    </header>
+
+    <div class="loginContainer">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-md-7 col-lg-8" style="margin: 0 auto; ">
+                    <form class="needs-validation">
+                        <div class="row g-3">
+
+                            <div class="col-12">
+                                <div style="display: inline-block; border:1px solid rgb(209, 209, 209); padding: 5px;"
+                                    class="logAndSign h2">
+                                    <li style="color: white; background-color:black; "><span>會員登入</span></li>
+                                    <li><a href="./signUp.html" style="color:black; text-decoration:none;">
+                                            <span>立即註冊</span></a></li>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <button id="btnGoogleLogin" class="w-100 btn btn-lg btn-light" type="button"
+                                    style="border:1px solid black;">使用Google登入</button>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="col-12">
+                                <label for="email" class="form-label" style="font-size: 24px;" style="font-size: 24px;">電子郵件地址</label>
+                                <input type="email" class="form-control" id="email" style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+
+                            </div>
+
+                            <div class="col-12">
+                                <label for="password" class="form-label" style="font-size: 24px;">密碼</label>
+                                <input type="password" class="form-control" id="password" style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                                <div class="invalid-feedback">
+                                    請輸入密碼
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <p style="text-align: right; color: gray;">
+                                    <a href='#enterEmail' class="popup-btn" style="text-decoration:none;">忘記密碼 ?</a>
+                                </p>
+                            </div>
+
+                            <hr class="my-4">
+
+                        </div>
+                        <div class="col-12">
+                            <button id="btnLogin" class="w-100 btn btn-lg btn-dark" type="button" style="font-size: 24px;">登入</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="popup-wrap" id="enterEmail">
+        <div class="popup-box transform-out">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel" style="font-size: 64px ;">請輸入註冊的電子信箱</h5>
+                    </div>
+                    <div class="modal-body">
+                        <input id="inputEnterEmail" type="text" style="font-size: 64px ;">
+                    </div>
+                    <br>
+                    <div class="modal-footer">
+                        <button id="btnResetPassword" type="button" class="btn btn-primary"
+                            style="font-size: 48px ;">發送郵件</button>
+                    </div>
+                </div>
+            </div>
+
+            <a class="close-btn popup-close" href="#" style="text-decoration: none;">x</a>
+        </div>
+    </div>
+
+    <footer>
+        <script src="../headerAndFooter/footer.js"></script>
+    </footer>
+
+
+    <!-- 登入按鈕功能 -->
+    <script>
+        $("#btnLogin").on("click", function () {
+            var dataToServer = {
+                email: $("#email").val(),
+                password: $("#password").val()
+            }
+            console.log(dataToServer);
+
+            $.ajax({
+                type: "post",
+                url: "http://localhost:3000/login",
+                data: JSON.stringify(dataToServer),
+                contentType: "application/json",
+                success: function (e) {
+                    // e會收到後端res.send的內容
+                    // 如果帳號密碼錯誤，會分別收到email_error即password_error
+                    if (e == 'email_error') {
+                        console.log('帳號輸入錯誤');
+                        email_error();
+                        return;
+                    }
+
+                    if (e == 'password_error') {
+                        console.log('密碼輸入錯誤');
+                        password_error();
+                        return;
+                    }
+
+                    // 帳號密碼比對都沒有錯誤，則在session儲存會員id，並跳到會員葉面
+                    // id會在會員頁時使用到
+                    if (e.id != undefined) {
+                        console.log(`可以登入，編號是${e.id}`);
+                        sessionStorage.setItem('userId', JSON.stringify(e.id));
+                        window.location = '../member/profile.html';
+                    }
+                }
+            })
+        })
+
+
+        // 帳號輸入錯誤，顯示訊息到畫面
+        var emailErrorDuplicated = false;
+        function email_error() {
+            if (emailErrorDuplicated == false) {
+                emailErrorDuplicated = true;
+                console.log('顯示帳號錯誤');
+                $('#email').after(`<div id='emailError' style="color: red;">輸入帳號錯誤</div>`);
+            }
+        }
+
+        // 密碼輸入錯誤，顯示訊息到畫面
+        var passwordErrorDuplicated = false;
+        function password_error() {
+            if (passwordErrorDuplicated == false) {
+                passwordErrorDuplicated = true;
+                console.log('輸入密碼錯誤');
+                $('#emailError').remove();
+                $('#password').after('<div style="color: red;">輸入密碼錯誤</div>');
+            }
+        }
+    </script>
+
+
+    <!-- google登入功能 -->
+    <script>
+        // 當google伺服器回應後會執行的程式
+        function handleCredentialResponse(response) {
+            // decodeJwtResponse() is a custom function defined by you
+            // to decode the credential response.
+            const responsePayload = response.credential;
+            // console.log(`console.log ${responsePayload}`);
+            var dataToServer = {
+                token: responsePayload
+            }
+
+            $.ajax({
+                type: "post",
+                url: "http://localhost:3000/login/token",
+                data: JSON.stringify(dataToServer),
+                contentType: "application/json",
+                success: function (e) {
+                    sessionStorage.setItem('userId', e.id);
+                    window.location = '../member/profile.html';
+                }
+            })
+        }
+    </script>
+
+    <!-- 忘記密碼彈出視窗 -->
+    <script>
+        // 彈出視窗控制程式，必須也放在ajax的成功結果內，否則上面透過迴圈生成的畫面
+        // 會無法觸發js程式，即使class或是id都是對的
+        $(".popup-btn").click(function (e) {
+            var href = $(this).attr("href");
+            $(href).fadeIn(250);
+            $(href).children$(".popup-box").removeClass("transform-out").addClass("transform-in");
+            e.preventDefault();
+        });
+
+        $(".popup-close").click(function () {
+            closeWindow();
+        });
+
+        function closeWindow() {
+            $(".popup-wrap").fadeOut(200);
+            $(".popup-box").removeClass("transform-in").addClass("transform-out");
+            event.preventDefault();
+        }
+    </script>
+
+    <!-- 忘記密碼發送請求 -->
+    <script>
+        $("#btnResetPassword").on("click", function () {
+            var dataToServer = {
+                email: $("#inputEnterEmail").val()
+            }
+
+            $.ajax({
+                type: "post",
+                url: "http://localhost:3000/forgetPassowrd",
+                data: JSON.stringify(dataToServer),
+                contentType: "application/json",
+                success: function (e) {
+                    // 如果e收到'already_reset_password'，代表密碼重置成功
+                    // 如果e收到'not_found_email'代表該帳號還沒註冊
+                    alert('信件發送完成，請到信箱查看');
+                   console.log(e);
+                }
+            })
+        })
+
+
+        
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>profile</title>
+    <!-- Bootstrap5引用 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="../css/menu.css">
+
+</head>
+
+<body>
+    <header>
+        <script src="../headerAndFooter/header.js"></script>
+    </header>
+
+    <div class="memberContainer">
+
+        <script src="../headerAndFooter/memberMenu.js"></script>
+
+        <div class="container">
+
+            <div class="row g-5" style="margin-top: 0;">
+
+                <div class="col-md-7 col-lg-8" style="margin: 0 auto;">
+                    <form class="needs-validation" novalidate>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label for="firstName" class="form-label">名稱</label>
+                                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                                <div class="invalid-feedback">
+                                    Valid first name is required.
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="lastName" class="form-label">姓氏</label>
+                                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                                <div class="invalid-feedback">
+                                    Valid last name is required.
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="email" class="form-label">Email <span class="text-muted"></span></label>
+                                <input type="email" class="form-control" id="email" placeholder="test@google.com">
+                                <div class="invalid-feedback">
+                                    請輸入電子信箱地址
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="birthDate" class="form-label">出生日期</label>
+                                <input type="date" class="form-control" id="birthDate" placeholder="1993/09/12"
+                                    required>
+                                <div class="invalid-feedback">
+                                    請選擇出生年月日
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="address" class="form-label">選擇縣市</label>
+                                <select data-select2-id="city" tabindex="-1" aria-hidden="true" class="form-select">
+                                    <option value="0" data-select2-id="4">縣市</option>
+                                    <option value="368" data-select2-id="10">臺北市</option>
+                                    <option value="381" data-select2-id="11">基隆市</option>
+                                    <option value="389" data-select2-id="12">新北市</option>
+                                    <option value="419" data-select2-id="13">宜蘭縣</option>
+                                    <option value="433" data-select2-id="14">新竹市</option>
+                                    <option value="435" data-select2-id="15">新竹縣</option>
+                                    <option value="449" data-select2-id="16">桃園市</option>
+                                    <option value="463" data-select2-id="17">苗栗縣</option>
+                                    <option value="482" data-select2-id="18">臺中市</option>
+                                    <option value="512" data-select2-id="19">彰化縣</option>
+                                    <option value="539" data-select2-id="20">南投縣</option>
+                                    <option value="553" data-select2-id="21">嘉義市</option>
+                                    <option value="555" data-select2-id="22">嘉義縣</option>
+                                    <option value="574" data-select2-id="23">雲林縣</option>
+                                    <option value="595" data-select2-id="24">臺南市</option>
+                                    <option value="633" data-select2-id="25">高雄市</option>
+                                    <option value="672" data-select2-id="26">屏東縣</option>
+                                    <option value="706" data-select2-id="27">花蓮縣</option>
+                                    <option value="720" data-select2-id="28">臺東縣</option>
+                                    <option value="737" data-select2-id="29">澎湖縣</option>
+                                    <option value="744" data-select2-id="30">金門縣</option>
+                                    <option value="751" data-select2-id="31">連江縣</option>
+                                    <option value="756" data-select2-id="32">南海諸島</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="address" class="form-label">選擇鄉鎮</label>
+                                <select class="form-select" id="town" data-select2-id="town" tabindex="-1"
+                                    aria-hidden="true">
+                                    <option value="0" data-select2-id="40">鄉鎮市區</option>
+                                </select>
+                            </div>
+
+
+                            <div class="col-12">
+                                <!-- <label for="address" class="form-label">通訊地址<span class="text-muted"></span></label> -->
+                                <input type="text" class="form-control" id="address" placeholder="請填寫完整地址">
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <button class="w-100 btn btn-lg" type="submit" style="background-color: gray;">確認修改</button>
+
+                </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <footer>
+        <script src="../headerAndFooter/footer.js"></script>
+    </footer>
+</body>
+
+</html>

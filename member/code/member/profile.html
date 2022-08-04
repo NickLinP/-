@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>profile</title>
+    <!-- Bootstrap5引用 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="../css/menu.css">
+
+    <!-- jQuery引用 -->
+    <script src="../_js/jquery-3.6.0.js"></script>
+
+    <!-- 縣市選單引用 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <header>
+        <script src="../headerAndFooter/header.js"></script>
+    </header>
+
+    <div class="memberContainer">
+        <div>
+            <div class="row g-5" style="margin-top: 0;">
+                <!-- 側欄 -->
+                <script src="../headerAndFooter/memberMenu.js"></script>
+
+                <div class="col-md-7 col-lg-8" style="margin: 0 auto;">
+                    <form class="needs-validation" novalidate>
+                        <div>
+                            <p class="h2">會員資料</p>
+                        </div>
+                        <hr style="margin-bottom: 2%;">
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label for="firstName" class="form-label" style="font-size: 24px;">名稱</label>
+                                <input type="text" class="form-control" id="firstName" required style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="lastName" class="form-label" style="font-size: 24px;">姓氏</label>
+                                <input type="text" class="form-control" id="lastName" required style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="email" class="form-label" style="font-size: 24px;">Email</label>
+                                <input type="email" class="form-control" id="email"readonly style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="phoneNumber" class="form-label" style="font-size: 24px;">聯絡電話</label>
+                                <input type="text" class="form-control" id="phoneNumber" style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="birthDate" class="form-label" style="font-size: 24px;">出生日期</label>
+                                <input type="date" class="form-control" id="birthDate" required style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+
+                            <!-- 縣市選單 -->
+                            <!-- js引用目前不知道為何一定要放在這裡，如果移到上面head內會失效 -->
+                            <script src="../_js/twZipCode/jquery.twzipcode.min.js"></script>
+                            <div id="twzipcode">
+                                <div>
+                                    <label for="country" class="form-label" style="font-size: 24px;">聯絡地址</label>
+                                    <div class="zipCode col-12 country" data-role="county" data-value="110"
+                                        style="display: inline-block;font-size: 24px;">
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 1.5%;">
+                                    <div class="zipCode col-12 township" data-role="district" data-value="臺北市"
+                                        style="display: inline-block;font-size: 24px;"></div>
+                                </div>
+
+                                <div data-role="zipcode" data-value="信義區" style="display: none;"></div>
+                            </div>
+
+                            <div class="col-12">
+
+                                <input type="text" class="form-control" id="address" placeholder="請填寫完整地址" style="font-size: 24px; border: 2px solid rgb(179, 178, 178);">
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <button id="modify" class="w-100 btn btn-lg" type="button"
+                            style="background-color: black;"><span style="color: white;font-size: 24px;">確認修改</span></button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <footer>
+        <script src="../headerAndFooter/footer.js"></script>
+    </footer>
+
+
+    <!-- 新增縣市選單 -->
+    <script>
+        $('#twzipcode').twzipcode();
+        $('.zipCode > select').addClass('form-select');
+        $('.country > select').attr('id', 'country');
+        $('.country > select').attr('style', 'font-size:24px; border: 2px solid rgb(179, 178, 178);');
+        $('.township > select').attr('id', 'township');
+        $('.township > select').attr('style', 'font-size:24px; border: 2px solid rgb(179, 178, 178);');
+    </script>
+
+    <!-- 讀回會員資料渲染到表格內 -->
+    <script>
+        // 當畫面準備好時透過ajax發送資料根據session的id讀回會員資料
+        $(document).ready(function () {
+            var userId = sessionStorage.getItem('userId');
+            var dataToServer = { userId: userId };
+            $.ajax({
+                type: "post",
+                url: "http://localhost:3000/member/profile",
+                data: JSON.stringify(dataToServer),
+                contentType: "application/json",
+                success: function (e) {
+                    console.log('會員資料接收成功');
+                    $('#firstName').val(e.firstname);
+                    $('#lastName').val(e.lastname);
+                    $('#email').val(e.email);
+                    $('#phoneNumber').val(e.phoneNumber);
+                    // 需要透過substr擷取，否則除了yyyy-dd-mm還會讀取到
+                    // 時間戳記，這樣寫入會出現格式不符合的錯誤
+                    $('#birthDate').val(e.birthdate.substr(0, 10));
+                    // $('#country').val(e.country);
+                    // $('#township').val(e.township);
+                    $('#twzipcode').twzipcode('set', {
+                        'county': e.country,
+                        'district': e.township,
+                    });
+
+                    $('#address').val(e.address);
+                }
+            })
+        });
+
+
+        // 修改會員資料
+        $('#modify').on('click', function () {
+            var county = $('#twzipcode').twzipcode('get', 'county');
+            // 取得縣市 county 以及鄉鎮市區 district（返回陣列）
+            var result = $('#twzipcode').twzipcode('get', 'county,district'); // 以 , 字串傳入
+            var result = $('#twzipcode').twzipcode('get', ['county', 'district']);  // 以陣列傳入
+            var getCountry = '';
+            var gettownship = '';
+
+            // Callback
+            $('#twzipcode').twzipcode('get', function (country, district, zipcode) {
+                console.log(country);   // 縣市
+                console.log(district); // 鄉鎮市區
+                console.log(zipcode);  // 郵遞區號
+                getCountry = country;
+                gettownship = district;
+            });
+
+            var dataToServer = {
+                userId: sessionStorage.getItem('userId'),
+                firstName: $('#firstName').val(),
+                lastName: $('#lastName').val(),
+                email: $('#email').val(),
+                phoneNumber: $('#phoneNumber').val(),
+                password: $('#password').val(),
+                birthDate: $('#birthDate').val(),
+                // country: $('#country').val(),
+                // township: $('#township').val(),
+                country: getCountry,
+                township: gettownship,
+                address: $('#address').val()
+            }
+
+            $.ajax({
+                type: "put",
+                url: "http://localhost:3000/member/dataUpdate",
+                data: JSON.stringify(dataToServer),
+                contentType: "application/json",
+                success: function (e) {
+                    console.log('會員資料修改完成');
+                }
+            })
+            alert('會員資料修改完成');
+        })
+    </script>
+
+    <!-- 會員側欄高度計算 -->
+    <script src="../headerAndFooter/memberMeunCal.js"></script>
+    <!-- 會員側欄資料渲染 -->
+    <script src="../headerAndFooter/memberMenuData.js"></script>
+</body>
+
+</html>

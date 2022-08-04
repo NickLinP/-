@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <!-- Bootstrap5引用 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="../css/menu.css">
+    <script src="../_js/jquery-3.6.0.js"></script>
+    <style>
+        .listTable tr th {
+            border: 1px solid white;
+            text-align: center;
+            width: 20%;
+            background-color: gray;
+        }
+
+        .listTable td {
+            border: 1px solid white;
+            text-align: center;
+            border-bottom: 1px solid gray;
+        }
+
+        .listTable td:first-child {
+            border-right: 1px solid gray;
+        }
+
+        .listTable td:nth-child(2) {
+            border-right: 1px solid gray;
+        }
+
+        .listTable td:nth-child(3) {
+            border-right: 1px solid gray;
+        }
+
+        .listTable td:nth-child(4) {
+            border-right: 1px solid gray;
+        }
+
+        .search {
+            width: 80%;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            /* border: 1px solid black; */
+        }
+
+
+
+        .orderDetail {
+            /* 24.8%事實際測試結果，剛好可以填滿外層div的100%寬度，如果大於會發生跑版 */
+            width: 24.8%;
+            height: 200px;
+            border: 1px solid yellow;
+            float: left;
+            text-align: center;
+        }
+
+        /* 商品flex */
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            text-align: center;
+            height: 250px;
+            /* border: 1px solid red; */
+        }
+
+        .flex-item-left {
+            background-color: #f1f1f1;
+            padding: 10px;
+            flex: 20%;
+        }
+
+        .flex-item-right {
+            /* background-color: dodgerblue; */
+            padding: 10px;
+            flex: 20%;
+        }
+
+        @media (max-width: 1000px) {
+            .flex-container {
+                height: 500px;
+            }
+
+            .flex-item-right,
+            .flex-item-left {
+                flex: 100%;
+            }
+        }
+
+        .showAndHide {
+            display: none;
+        }
+
+        #select {
+            width: 1000px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <script src="../headerAndFooter/header.js"></script>
+    </header>
+
+
+    <div class="memberContainer">
+        <div class="row g-5" style="margin-top: 0;">
+            <script src="../headerAndFooter/memberMenu.js"></script>
+            <div class="col-8" style="margin: 0 auto;">
+                <div>
+                    <p class="h2">餐飲訂位紀錄</p>
+                </div>
+                <hr>
+                <div class="search h4">
+                    <span>依日期搜尋</span>
+                    <input type="date" class="dateInput ">
+                    <span>~</span>
+                    <input type="date" class="dateInput">
+                    <span class="btn btn-dark">搜尋</span>
+                </div>
+
+                <table style="width: 100%; border-collapse:collapse;" class="listTable">
+                    <tbody>
+                        <tr id="title" class="h3">
+                            <th>預定日期</th>
+                            <th>時段</th>
+                            <th>人數</th>
+                            <th>姓名</th>
+                            <th>電話</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <script src="../headerAndFooter/footer.js"></script>
+        </footer>
+
+        <!-- 訂位紀錄帶出 -->
+        <script>
+            $(document).ready(function () {
+                var userId = sessionStorage.getItem('userId');
+                var dataToServer = { userId: userId };
+                $.ajax({
+                    type: "post",
+                    url: "http://localhost:3000/member/coffee",
+                    data: JSON.stringify(dataToServer),
+                    contentType: "application/json",
+                    success: function (e) {
+                        console.log(e);
+                        console.log(e.length);
+                        for (var i = 0; i < e.length; i++) {
+                            var reserveDate = e[i].reserveDate.substr(0, 10);
+                            var startTime = e[i].startTime;
+                            var employees = e[i].employees;
+                            var name = e[i].name;
+                            var phoneNumber = e[i].phoneNumber;
+                            // console.log(reserveDate);
+                            // console.log(startTime);
+                            // console.log(employees);
+                            // console.log(name);
+                            // console.log(phoneNumber);
+                            $('#title').after(
+                                `<tr class="h4">
+                            <td>${reserveDate}</td>
+                            <td>${startTime}</td>
+                            <td>${employees}人</td>
+                            <td>${name}</td>
+                            <td>${phoneNumber}</td>
+                            </tr>`
+                            )
+                        }
+                    }
+                })
+            });
+        </script>
+
+        <!-- 會員側欄高度計算 -->
+        <script src="../headerAndFooter/memberMeunCal.js"></script>
+        <!-- 會員側欄資料渲染 -->
+        <script src="../headerAndFooter/memberMenuData.js"></script>
+</body>
+
+</html>
