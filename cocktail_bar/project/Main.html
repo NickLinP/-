@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="cocktail bar web">
+    <meta name="keywords" content="cocktail bar">
+    <meta name="author" content="Nick Lin">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+    <title>Cocktail Bar</title>
+
+    <style>
+        body {
+            background-color: black;
+            overflow: hidden;
+        }
+
+        /* 開頭圖片 */
+        #leftShadow {
+            position: absolute;
+            left: 0%;
+            z-index: 100;
+            -webkit-transition: left 10s ease-out;
+            -ms-transition: left 10s ease-out;
+            transition: left 10s ease-out;
+        }
+
+        #rightShadow {
+            position: absolute;
+            right: 0%;
+            z-index: 100;
+            -webkit-transition: right 10s ease-out;
+            -ms-transition: right 10s ease-out;
+            transition: right 10s ease-out;
+        }
+
+        /* 酒單與店家資訊 */
+        #menu:hover {
+            filter: blur(5px) brightness(30%);
+            transition: all 0.5s ease;
+        }
+
+        #inf:hover {
+            filter: blur(5px) brightness(30%);
+            transition: all 0.5s ease;
+        }
+
+        /* 隨機調酒 */
+        #randomCocktail:hover {
+            filter: blur(5px) brightness(30%);
+            transition: all 0.5s ease;
+        }
+
+        /* 菜單彈出 */
+        .box {
+            position: fixed;
+            bottom: -100%;
+            left: 30%;
+            width: 50%;
+            height: 100%;
+            overflow-y: auto;
+            z-index: 101;
+            -webkit-transition: bottom 0.5s ease-out;
+            -ms-transition: bottom 0.5s ease-out;
+            transition: bottom 0.5s ease-out;
+        }
+
+        a.boxClose {
+            float: right;
+            width: 26px;
+            height: 26px;
+            background: transparent url(/images/cancel.png) repeat top left;
+            margin-top: -30px;
+            margin-right: -30px;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        /* 菜單彈出 */
+
+        /* 地圖彈出 */
+        .map {
+            position: fixed;
+            bottom: 0;
+            left: 100%;
+            width: 50%;
+            height: 100%;
+            overflow-y: scroll;
+            z-index: 101;
+            -webkit-transition: left 0.5s ease-out;
+            -ms-transition: left 0.5s ease-out;
+            transition: left 0.5s ease-out;
+        }
+
+        a.mapClose {
+            float: right;
+            width: 26px;
+            height: 26px;
+            background: transparent url(/images/cancel.png) repeat top left;
+            margin-top: -30px;
+            margin-right: -30px;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        /* 地圖彈出 */
+    </style>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"
+        integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body onclick="DoHide()">
+
+    <div id="backgroundDiv" class="container" style="filter: brightness(100%); overflow: hidden;">
+
+        <!-- <img id="block1" src="images/1.jpg" alt="" style="width: 100%; height: 100%;">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <img src="images/2.jpg" alt="" style="width: 100%; height: 100%;">
+            </div>
+            <div class="col-1"></div>
+        </div> -->
+
+
+        <div class="row other_0" style="margin-top: 2em;">
+            <div class="col-2"></div>
+            <div class="col-5">
+                <div style="color: white; font-size: 32px;">店內環境</div>
+                <br>
+                <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="images/store/3.jpg" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/store/3-1.jpg" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/store/3-2.jpg" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators"
+                        data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators"
+                        data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </button>
+                </div>
+
+            </div>
+            <div class="col-5">
+                <div style="text-align: center; color: white; font-size: 32px; margin-top: 200px;">一個人的怡然自得</div>
+                <div style="text-align: center; color: white; font-size: 32px; margin-top: 50px;">專屬單人的空間</div>
+                <div style="text-align: center; color: white; font-size: 32px;">輕鬆享受獨處的氛圍</div>
+            </div>
+            <img id="leftShadow" src="images/store/background.jpg" alt="" width="60%" height="30%">
+            <img id="rightShadow" src="images/store/background.jpg" alt="" width="40%" height="30%">
+        </div>
+        <div style="margin-top: 300px;" class="other_1">
+            <p style="color: white;font-size: 32px;">
+                專業又親切的夥伴
+            </p>
+        </div>
+        <div class="row" style="margin-top: 1em; margin-left: -10%;">
+
+            <div class="col-6">
+                <img src="images/store/4.jpg" alt="" style="width: 100%; height: 100%;">
+            </div>
+            <div class="col-6">
+                <img src="images/store/5.jpg" alt="" style="width: 100%; height: 100%;">
+            </div>
+        </div>
+        <div class="row" style="margin-top: 50px;">
+
+            <div class="col-6">
+                <div style="color: white; font-size: 24px;">
+                    <p>調酒師們專注於細節</p>
+                </div>
+                <div style="color: white; font-size: 24px; margin-top: 16px;">
+                    <p>追求最極致的技術</p>
+                </div>
+                <div style="color: white; font-size: 24px; margin-top: 16px;">
+                    <p>完美呈現調酒的層次與風味</p>
+                </div>
+            </div>
+            <div class="col-6">
+                <div style="color: white; font-size: 24px; padding-left: 10%;">
+                    <p>調酒師引導您選擇喜歡的味道</p>
+                </div>
+                <div style="color: white; font-size: 24px; margin-top: 16px; padding-left: 10%;">
+                    <p>但不會給您過多的打擾</p>
+                </div>
+                <div style="color: white; font-size: 24px; margin-top: 16px; padding-left: 10%;">
+                    <p>讓您能專注在舌尖的體驗</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 10em;">
+            <div class="col-1">
+
+            </div>
+            <div class="col-5">
+                <div style="color: white; font-size: 36px; margin: 100px 0 0 100px">
+                    <p>完美的視覺饗宴</p>
+                </div>
+                <div style="color: white; font-size: 24px;  margin:60px 0 0 100px;">
+                    <p>從調製到過程開始</p>
+                </div>
+                <div style="color: white; font-size: 24px;  margin-left: 100px;">
+                    <p>直到完成的那一刻</p>
+                </div>
+                <div style="color: white; font-size: 24px;  margin-left: 100px;">
+                    <p>讓您感受到視覺的滿足</p>
+                </div>
+            </div>
+            <div class="col-5">
+                <img src="images/store/6.jpg" alt="" style="width: 100%; height: 100%;">
+            </div>
+            <div class="col-1">
+
+            </div>
+        </div>
+
+        <div>
+            <img src="images/store/7.jpg" class=" other_2" alt=""
+                style="width: 70%; height: 30%; display:block; margin:0 auto">
+        </div>
+
+        <div class="row" style="margin-top: 2%;">
+            <div class="col-6">
+                <!-- onclick觸發菜單彈出 -->
+                <img id="menu" src="images/store/8.jpg" alt="" style="width: 480px; height: 320px"
+                    onclick="DoMenuShow();">
+                <img src="images/store/menuInfo.png" alt="" width="40%" height="10%"
+                    style="position: relative; top: -50%; left: 25%;">
+            </div>
+            <div class="col-6">
+                <!-- onclick觸發地圖彈出 -->
+                <img id="inf" src="images/store/9.jpg" alt="" onclick="DoMapShow()"
+                    style="width: 480px; height: 320px; position: relative;">
+                <img src="images/store/storeInfo.png" alt="" width="40%" height="10%"
+                    style="position: relative; top: -50%; left: 25%;">
+
+            </div>
+        </div>
+
+        <div class="row" style="margin:15% 0;">
+            <div class="col-12">
+                <a href="RandomCocktail.html">
+                    <img id="randomCocktail" src="images/cocktail/random.jpg" class=" other_2" alt=""
+                        style="width: 100%; height: 100%;">
+                </a>
+                <img src="images/cocktail/randomTextWhite.png" alt=""
+                    style="position: relative; top: -50%; left: 25%; z-index: 100;">
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- 菜單彈出 -->
+    <div class="box" id="box">
+        <a class="boxclose" id="boxclose"></a>
+        <img src="images/store/10.jpg" alt="" width="100%" height="100%">
+        <img src="images/store/11.jpg" alt="" width="100%" height="100%">
+        <img src="images/store/12.jpg" alt="" width="100%" height="100%">
+    </div>
+    <!-- 菜單彈出 -->
+
+    <!-- 地圖彈出 -->
+    <div class="map" id="map" style="background-color: black;">
+        <a class="mapClose" id="mapClose"></a>
+        <div style="margin-top: 10%;">
+            <p style="color: white;font-size: 32px; text-align: center;">營業地址：台中市南屯區黎明路二段147之1號</p>
+        </div>
+        <div>
+            <p style="color: white;font-size: 32px; text-align: center;">營業時間:19:00-03:00</p>
+        </div>
+        <div>
+            <p style="color: white;font-size: 32px; text-align: center;">01:30為最晚收客時間</p>
+        </div>
+        <div style="text-align: center;">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3640.7472658887646!2d120.63424831536767!3d24.145512279483384!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34693dc410421a17%3A0xb7224619d23d60ab!2z5Lit6I-v6Zu75L-hIOm7juaYjuacjeWLmeS4reW_gw!5e0!3m2!1szh-TW!2stw!4v1649820261387!5m2!1szh-TW!2stw"
+                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+
+    <!-- 地圖彈出 -->
+
+
+    <script>
+        // 開場黑幕移開
+        if (true) {
+            Remove()
+            document.scrollingElement.scrollTop = 0;
+        }
+
+        function Remove() {
+            let left = document.getElementById('leftShadow')
+            let right = document.getElementById('rightShadow')
+            console.log(left);
+            console.log(right);
+            left.style.left = '-200%'
+            right.style.right = '-200%'
+        }
+
+    </script>
+
+
+    <!-- 滾輪功能互鎖 -->
+    <script>
+        var scrollInterLock = false;
+        function ScrollInterLockOn() {
+            scrollInterLock = true;
+        }
+
+        function ScrollInterLockOff() {
+            scrollInterLock = false;
+        }
+    </script>
+
+    <!-- 滾輪位置監看 -->
+    <script>
+        var mapHideCount = 0;
+        function MapHideCount() {
+            mapHideCount = 1;
+            console.log(mapHideCount);
+        }
+
+        window.onscroll = function () {
+            //取兩個值是為了保證相容性，哪一個有數值就取哪一個
+            //scrollTop是觸發滾輪事件時的高度
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            console.log("滚动距离" + scrollTop);
+            scrollTop = '2000';
+        }
+    </script>
+
+    <!-- 滾輪監聽 -->
+
+    <script>
+        window.addEventListener("mousewheel", WheelGo, { passive: false })
+
+        var cur_index = -0;
+        var invoke = false;
+        list = [{ ele: "other_0" }, { ele: "other_1" }, { ele: "other_2" }];
+        list = initSrollPosition("body", list);
+
+
+        function initSrollPosition(ele, list) {
+
+            if (scrollInterLock == false) {
+                var container = document.querySelector(ele)
+                for (var i in list) {
+                    list[i].position = document.querySelector("." + list[i].ele).offsetTop;
+
+                    console.log(list[i].position);
+                }
+                return list
+            }
+        }
+
+
+        function stopDefault(e) {
+            if (scrollInterLock == false) {
+                e.preventDefault()
+                return false
+            }
+        }
+
+        function WheelGo(e) {
+            //判斷現在位置
+            if (scrollInterLock == false) {
+                var isDown = e.deltaY > 0 ? true : false
+
+                stopDefault(e)
+                if (invoke) {
+                    return
+                }
+                moveTo(isDown)
+            }
+
+        }
+
+        let posArr = [0, 1031, 2057, 3009]
+        let posIndex = 0;
+        function moveTo(isDown) {
+            if (scrollInterLock == false) {
+
+                var cur_state
+                if (isDown) {
+                    cur_index = cur_index >= list.length - 1 ? list.length - 1 : cur_index + 1
+                    var cur_state = list[cur_index]
+                    if (posIndex < 3) {
+                        posIndex++;
+                    }
+                    console.log(`印出posIndex${posIndex}`);
+                } else {
+                    cur_index = cur_index <= 0 ? 0 : cur_index - 1;
+                    cur_state = list[cur_index];
+                    if (posIndex > 0) {
+                        posIndex--;
+                    }
+                    console.log(`印出posIndex${posIndex}`);
+                }
+
+                console.log("invoke")
+
+                invoke = true
+
+                window.scrollTo({ top: (posArr[posIndex]), left: 0, behavior: "smooth" })
+
+                setTimeout(() => {
+                    invoke = false
+                }, 500)
+            }
+        }
+
+    </script>
+
+
+    <!-- 菜單彈出 -->
+    <script>
+
+        function DoMenuShow() {
+            document.getElementById("box").style.bottom = "0px";
+            document.getElementById("backgroundDiv").style.filter = "blur(10px) brightness(30%)";
+            ScrollInterLockOn()
+            setTimeout(MapHideCount, 1000);
+        }
+        // function DoMenuHide() {
+        //     document.getElementById("box").style.bottom = "-100%";
+        //     document.getElementById("backgroundDiv").style.filter = "blur(0px) brightness(100%)";
+        //     mapHideCount = 0;
+        //     console.log(mapHideCount);
+        // }
+    </script>
+    <!-- 菜單彈出 -->
+
+    <!-- 地圖彈出 -->
+    <script>
+        function DoMapShow() {
+            document.getElementById("map").style.left = "25%";
+            document.getElementById("backgroundDiv").style.filter = "blur(10px) brightness(30%)";
+            ScrollInterLockOn()
+            setTimeout(MapHideCount, 1000);
+        }
+
+        function DoHide() {
+            if (mapHideCount == 1) {
+                document.getElementById("map").style.left = "100%";
+                document.getElementById("box").style.bottom = "-100%";
+                document.getElementById("backgroundDiv").style.filter = "blur(0px) brightness(100%)";
+                ScrollInterLockOff()
+                mapHideCount = 0;
+                console.log(mapHideCount);
+            }
+        }
+    </script>
+    <!-- 地圖彈出 -->
+</body>
+
+</html>

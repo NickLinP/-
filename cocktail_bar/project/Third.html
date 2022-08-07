@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            background-color: black;
+        }
+
+        #cocktailImg {
+            box-shadow: 0;
+            transition: 0.5s;
+            width: 100%;
+            height: 100%;
+        }
+
+        #cocktailImg:hover {
+            margin-top: -2%;
+            box-shadow: 0 3px 15px 3px rgba(255, 254, 254, 0.5);
+        }
+
+        #cocktailName {
+            color: white;
+        }
+
+        #imgBlock {
+            position: relative;
+            left: 0;
+            top: 0;
+            width: 600px;
+            height: 800px;
+            margin: 0 auto;
+            z-index: 100;
+            transition: all 1s ease;
+        }
+
+        #videoBlock {
+            color: white;
+            position: relative;
+            left: 0;
+            top: -800px;
+            width: 600px;
+            height: 800px;
+            margin: 0 auto;
+            transition: all 1s ease;
+        }
+
+        /* #popUp{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 500px;
+            height: 500px;
+            background-color: gray;
+        } */
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <div id="button" style="color: white; text-align:center; width:5%; position: fixed;">
+            <img src="images/cocktail/roll.png" alt="" onclick="RandomCocktail()" width="100%">
+            <br>
+            隨機推薦
+        </div>
+    </div>
+
+    <div style="position : realative;">
+        <div id="imgBlock">
+            <img id="cocktailImg" src="images/cocktail/randomIce.png" alt="圖片顯示區域"
+                onclick="MoveVideo(), CloseMoveVideo()">
+            <h1 id="cocktailName">隨機推薦</h1>
+        </div>
+        <div id="videoBlock">
+            <div id="videoSrc" style="height: 50%;"></div>
+
+            <div id="videoInfo" style="height: 50%; font-size: 2em;">
+                酸甜清香的口感，琴酒、橙花水與兩種檸檬汁，配上鮮奶油與蛋白，酸甜中帶點微微的濃郁感，表面會浮上一層厚厚的泡沫，在春夏時喝來特別爽口
+            </div>
+        </div>
+    </div>
+    <!-- <div id="popUp"></div> -->
+
+
+    <script>
+
+        // 隨機調酒，圖片與名稱
+        {
+            let arr = ['Ramos Gin Fizz', 'Long Island Iced Tea', 'Negroni', 'Screw Driver', 'Gin Tonic', 'Mojito', 'Blue Hawaii', 'Cosmopolitan', 'White Lady', 'Martini'];
+            let arrTasty = ['酸甜清香的口感，琴酒、橙花水與兩種檸檬汁，配上鮮奶油與蛋白，酸甜中帶點微微的濃郁感，表面會浮上一層厚厚的泡沫，在春夏時喝來特別爽口',
+                '長島冰茶，看似檸檬茶的它，外表柔和而吸引，讓人松懈所有的戒心，那種感覺有絲甜，有絲酸，有絲苦，更多的是潛藏的辛辣。',
+                'Negroni，是難以定調的華麗，最有意思的考題是：「你覺得它是甜，還是濃呢？」',
+                '螺丝起子口感酸甜爽口、清爽，清香微苦，淡淡的酒香带来纯粹的醇香，顷刻间伴随着微微醉意。',
+                '藉由通寧水溫和的苦味與氣泡口感，混合檸檬的酸澀香氣，帶出琴酒的獨特香醇。',
+                'Mojito 因為採用大量薄荷和檸檬，清新又酸甜的口感，沖淡了酒精的濃烈，喝起來清爽又開胃，因此很常作為開胃酒！',
+                '藍色柑香利口酒代表藍色的海洋，塞滿酒杯中的碎冰象徵著泛起的浪花，而酒杯里散發的果汁甜味猶如夏威夷的微風細語。',
+                '朦朧的粉紅色，代表時尚與時髦，口味上有著君度橙酒的甜，以及檸檬汁的酸，帶點蔓越莓的味道',
+                '雪白色的酒體，琴酒的藥草香溫柔包裹新鮮的柑橘果實味，如同百合一樣簡約典雅，這就是白色佳人。',
+                '以琴酒及苦艾酒調製，再用旋轉檸檬皮點綴，就成了經典風味的Martini，精緻優雅的形象香辣誘人。']
+
+            let videoSrcArray = ['<iframe width="560" height="315" src="https://www.youtube.com/embed/idg1ser266M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                '<iframe width="560" height="315" src="https://www.youtube.com/embed/qxFAovRZixY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                '<iframe width="560" height="315" src="https://www.youtube.com/embed/V8fAYAMByQQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                '<iframe width="560" height="315" src="https://www.youtube.com/embed/ce_YOgaEo3Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                '<iframe width="560" height="315" src="https://www.youtube.com/embed/zcDqZuSOtWY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                '<iframe width="560" height="315" src="https://www.youtube.com/embed/V3Clg3uVsRo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                '<iframe width="560" height="315" src="https://www.youtube.com/embed/gTdl56mhIE4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                '<iframe width="560" height="315" src="https://www.youtube.com/embed/vKv8cnh2ocU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                '<iframe width="560" height="315" src="https://www.youtube.com/embed/znEaFESKMjw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                '<iframe width="560" height="315" src="https://www.youtube.com/embed/e2eP-44d2sw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+            ]
+            let arrLength = arr.length;
+            let cocktailImg = document.getElementById('cocktailImg');
+            let cocktailName = document.getElementById('cocktailName');
+            let imgBlock = document.getElementById('imgBlock');
+            let videoBlock = document.getElementById('videoBlock');
+            let videoInfo = document.getElementById('videoInfo');
+            let imgPopUp = document.getElementById('cocktailImg');
+            let videoSrc = document.getElementById('videoSrc');
+            let imgChanged = false;
+
+            function RandomCocktail() {
+                let tempVal = Math.random();
+                let index = Math.floor(tempVal * arrLength);
+                cocktailImg.src = `images/cocktail/${arr[index]}.jpg`;
+                videoSrc.innerHTML = `${videoSrcArray[index]}`
+                imgPopUp.style.boxShadow = '0 3px 15px 3px rgba(255, 254, 254, 0.5)'
+                cocktailName.innerText = `調酒名稱：${arr[index]}`;
+                videoInfo.innerText = `調酒介紹：${arrTasty[index]}`;
+
+            }
+
+            // 影片出現
+            function ImgChangedCheck() {
+                if (imgChanged == false) {
+                    imgChanged = true;
+                } else if (imgChanged == true) {
+                    imgChanged = false;
+                }
+            }
+
+
+
+            function MoveVideo() {
+                if (imgChanged == false) {
+                    imgBlock.style.left = '-300px';
+                    videoBlock.style.left = '350px';
+                    setTimeout(ImgChangedCheck, 500);
+                }
+            }
+
+            function CloseMoveVideo() {
+                if (imgChanged == true) {
+                    imgBlock.style.left = '0px';
+                    videoBlock.style.left = '0px';
+                    imgChanged = false;
+                }
+            }
+
+
+        }
+    </script>
+</body>
+
+</html>
